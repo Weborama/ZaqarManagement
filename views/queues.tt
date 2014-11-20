@@ -1,0 +1,36 @@
+<div class="row-fluid">
+
+  <div class="page-header">
+    <h1>List of queues</h1>
+  </div>
+
+  <div>
+    <a href="[% request.uri_for("/queues/create") %]" class="btn btn-large btn-primary">Create new queue</a>
+  </div> 
+
+  <div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Queue name</th>
+          <th>Free messages</th>
+          <th>Claimed messages</th>
+          <th>Oldest message</th>
+          <th>Newest message</th>
+        </tr>
+      </thead>
+      <tbody>
+        [% FOREACH queue IN queues.sort("name") %]
+        <tr>
+          <td><a href="[% request.uri_for("/queue/${queue.name}") %]">[% queue.name %]</a></td>
+          <td>[% queue.free_messages %]</td>
+          <td>[% queue.claimed_messages %]</td>
+          <td>[% queue.oldest_message_hla %]</td>
+          <td>[% queue.newest_message_hla %]</td>
+        </tr>
+        [% END %]
+      </tbody>
+    </table>
+  </div>
+
+</div> 

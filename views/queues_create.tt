@@ -1,0 +1,17 @@
+<div class="row-fluid">
+
+  <div class="page-header">
+    <h1>Create queue</h1>
+  </div>
+
+  <form method="POST" id="queues_create" action="[% request.uri_for("/queues/create") %]">
+    <p>
+      The name MUST NOT exceed 64 bytes in length, and is limited to
+      US-ASCII letters, digits, underscores and hyphens.
+    </p>
+    <input type="text" name="queue_name" placeholder="Queue name"
+           autofocus="autofocus" required="required"
+           pattern="[A-Za-z0-9_-]{0,64}" >
+  </form>
+
+</div> 

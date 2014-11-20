@@ -1,0 +1,154 @@
+<div class="row-fluid">
+  <div class="span12">
+    <div class="page-header">
+      <h1>Create message</h1>
+    </div>
+    <p>
+      <form method="POST" id="create_message" action="[% request.uri_for("/message/create") %]"
+            class="form-horizontal" >
+
+        <div class="control-group">
+          <label class="control-label" for="queue_name">On queue</label>
+          <div class="controls">
+            <select id="queue_name" name="queue_name">
+              [% FOREACH queue IN queues.sort("name") %]
+              <option value="[% queue.name %]">[% queue.name %]</option>
+              [% END %]
+            </select>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="message_ttl">Message TTL (seconds)</label>
+          <div class="controls">
+            <input type="number" id="message_ttl" name="message_ttl" min="60" max="1209600" value="120">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="message_body">Body</label>
+          <div class="controls">
+            <textarea id="message_body" name="message_body" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn btn-primary">Create message</button>
+          </div>
+        </div>
+
+      </form>
+    </p>
+  </div>
+</div>
+
+<div class="row-fluid">
+  <div class="span12">
+    <div class="page-header">
+      <h1>Claim messages</h1>
+    </div>
+    <p>
+      <form method="POST" id="claim_messages" action="[% request.uri_for("/messages/claim") %]"
+            class="form-horizontal" >
+
+        <div class="control-group">
+          <label class="control-label" for="queue_name">On queue</label>
+          <div class="controls">
+            <select id="queue_name" name="queue_name">
+              [% FOREACH queue IN queues.sort("name") %]
+              <option value="[% queue.name %]">[% queue.name %]</option>
+              [% END %]
+            </select>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="claim_limit">Message limit</label>
+          <div class="controls">
+            <input type="number" id="claim_limit" name="claim_limit" min="1" max="20" value="10">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="claim_ttl">Claim TTL (seconds)</label>
+          <div class="controls">
+            <input type="number" id="claim_ttl" name="claim_ttl" min="60" max="43200" value="60">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="claim_grace">Claim grace (seconds)</label>
+          <div class="controls">
+            <input type="number" id="claim_grace" name="claim_grace" min="60" max="43200" value="60">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn btn-primary">Claim messages</button>
+          </div>
+        </div>
+
+      </form>
+    </p>
+  </div>
+</div>
+
+<div class="row-fluid">
+  <div class="span12">
+    <div class="page-header">
+      <h1>Claims in session</h1>
+    </div>
+    <div>
+
+      <p>
+        Note that while a claim might still be in your session data,
+        it could have been automatically deleted on the server.
+      </p>
+
+      [% IF session.claims.size %]
+      [% USE Dumper(Indent=0) %]
+      [% FOREACH claim IN session.claims %]
+
+      <div class="tabbable">
+        <ul class="nav nav-tabs" id="tabs[% loop.index %]">
+          [% FOREACH claim IN session.claims.values.sort("href") %]
+          <li [% IF loop.index == 0 %]class="active"[% END %]><a href="#[% loop.index %]" data-toggle="tab">[% claim.queue %]</a></li>
+          [% END %]
+        </ul>
+        <div class="tab-content">
+          [% FOREACH claim IN session.claims.values.sort("href") %]          
+          <div class="tab-pane [% IF loop.index == 0 %]active[% END %]" id="[% loop.index %]">
+            <p>
+              Claim on queue <strong>[% claim.queue %]</strong>, TTL
+              is <strong>[% claim.ttl %]</strong> seconds, grace
+              is <strong>[% claim.grace %]</strong> seconds.
+            </p>
+            <form method="POST" id="release_claim" action="[% request.uri_for("/messages/claim/release") %]">
+              <input type="hidden" name="claim_href" value="[% claim.href %]" />
+              <input type="hidden" name="claim_queue_name" value="[% claim.queue %]" />
+              <button type="submit" class="btn btn-primary">Release this claim</button>
+            </form>
+            [% FOREACH message IN claim.messages.values.sort("href") %]
+            <pre class="pre-scrollable">[% Dumper.dump(message.body) %]</pre>
+            <form method="POST" id="delete_message" action="[% request.uri_for("/messages/delete") %]">
+              <input type="hidden" name="claim_queue_name" value="[% claim.queue %]" />
+              <input type="hidden" name="claim_href" value="[% claim.href %]" />
+              <input type="hidden" name="message_href" value="[% message.href %]" />
+              <button type="submit" class="btn btn-primary">Delete this message</button>
+            </form>
+            [% END %]
+
+          </div>
+          [% END %]
+        </div>
+      </div>
+
+      [% END %]
+      [% ELSE %]
+      No claims in current session.
+      [% END %]
+    </div> 
+  </div>
+</div>

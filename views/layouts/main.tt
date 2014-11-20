@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Zaqar Queues Management [% IF title %] :: [% title %] [% END %]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, charset=[% settings.charset %]">
+    <link rel="stylesheet" href="[% request.uri_base %]/bootstrap/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="[% request.uri_base %]/bootstrap/css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="[% request.uri_base %]/css/style.css">
+
+  </head>
+  <body>
+    <script type="text/javascript" src="[% request.uri_base %]/javascripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="[% request.uri_base %]/bootstrap/js/bootstrap.js"></script>
+
+    <div id="mainwrap">
+
+      <div class="navbar navbar-static-top navbar-inverse">
+        <div class="navbar-inner">
+          <a class="brand" href="[% request.uri_for("/") %]">Zaqar Management</a>
+          <ul class="nav">
+            [% FOREACH menuitem IN menu %]
+            [% IF menuitem.is_active %]
+            <li class="active"><a href="[% request.uri_for(menuitem.path) %]">[% menuitem.title %]</a></li>
+            [% ELSE %]
+            <li><a href="[% request.uri_for(menuitem.path) %]">[% menuitem.title %]</a></li>
+            [% END %]
+            [% END %]
+          </ul>
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="span12" id="flashes">
+            [% FOR message = flash.error %]
+            <div class="alert alert-error">
+              [% message %]
+            </div>
+            [% END %]
+            [% FOR message = flash.warning %]
+            <div class="alert">
+              [% message %]
+            </div>
+            [% END %]
+            [% FOR message = flash.info %]
+            <div class="alert alert-info">
+              [% message %]
+            </div>
+            [% END %]
+            [% FOR message = flash.success %]
+            <div class="alert alert-success">
+              [% message %]
+            </div>
+            [% END %]
+          </div>
+        </div>
+        [% content %]
+        <div id="push"></div>
+      </div>
+
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">
+          Running <a href="https://github.com/Weborama/ZaqarManagement">ZaqarManagement</a>
+          version [% zm_version %].  Powered
+          by <a href="http://perldancer.org/">Dancer</a>
+          and <a href="http://www.perl.org/">Perl 5</a>.
+        </p>
+      </div>
+    </div>
+
+  </body>
+</html>

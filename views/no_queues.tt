@@ -1,0 +1,8 @@
+<div class="row-fluid">
+  <div class="page-header">
+    <h1>Oops</h1>
+  </div>
+  <p>
+    No queues exist on this node.
+  </p>
+</div>

@@ -1,0 +1,11 @@
+requires 'Dancer';
+requires 'Dancer::Plugin::FlashNote';
+requires 'DateTime';
+requires 'DateTime::Format::Human::Duration';
+requires 'DateTime::Format::ISO8601';
+requires 'File::ShareDir';
+requires 'Plack';
+requires 'Starman';
+requires 'Time::HiRes';
+requires 'Try::Tiny';
+requires 'WebService::Zaqar', '0.008';

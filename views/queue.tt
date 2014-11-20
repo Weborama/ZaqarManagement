@@ -1,0 +1,26 @@
+<div class="row-fluid">
+
+  <div class="page-header">
+    <h1>Queue [% queue_name %]</h1>
+  </div>
+
+  <div>
+    <p>
+      This queue has [% queue_stats.free_messages %] free messages and
+      [% queue_stats.claimed_messages %] claimed messages for a total
+      of [% queue_stats.total_messages %] total messages.
+    </p>
+    [% IF queue_stats.total_messages > 0 %]
+    <p>
+      The oldest message has been created [%
+      queue_stats.oldest_message_hla %] and the newest [%
+      queue_stats.newest_message_hla %].
+    </p>
+    [% END %]
+  </div>
+
+  <form method="POST" id="queue_delete" action="[% request.uri_for("/queue/${queue_name}/delete") %]">
+    <button class="btn btn-large btn-danger">Delete queue</button>
+  </form>
+
+</div> 
