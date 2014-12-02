@@ -1,5 +1,5 @@
 requires 'Dancer';
-requires 'Dancer::Plugin::FlashNote';
+requires 'Dancer::Plugin::FlashNote', '1.0.4';
 requires 'DateTime';
 requires 'DateTime::Format::Human::Duration';
 requires 'DateTime::Format::ISO8601';
