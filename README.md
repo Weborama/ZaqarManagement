@@ -16,6 +16,6 @@ queues.
     $ git clone https://github.com/Weborama/ZaqarManagement.git
     $ cd ZaqarManagement
     $ cpanm -v --installdeps .
-    $ plackup -s Starman -p 5002 --env development.yml bin/plack.psgi
+    $ plackup -s Starman -p 5002 --env development bin/plack.psgi
 
 The app can be visited on [your browser](http://localhost:5002).
